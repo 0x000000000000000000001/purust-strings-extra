@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e
+cd "$(dirname "$0")/.."
+
+CLEAN=0
+for arg in "$@"; do
+  if [ "$arg" == "-c" ] || [ "$arg" == "--clean" ]; then
+    CLEAN=1
+  fi
+done
+
+if [ "$CLEAN" == "1" ]; then
+  COMPILER_DIR="../purust"
+  echo "=== Recompiling ${COMPILER_DIR} ==="
+  (cd "${COMPILER_DIR}" && npm install --silent && npm run build --silent) || { echo "Compiler build failed"; exit 1; }
+fi
+
+# Remove cache for safety
+rm -rf output .spago .cache ../purust-*/output ../purust-*/.spago ../purust-*/.cache
+
+echo "=== Building project with spago ==="
+spago build || { echo "Spago build failed"; exit 1; }
+
+echo "=== Appending missing FFI stubs ==="
+# No longer append stubs globally, let's keep it here just in case? No, the stubs are for old runner.
+
+echo "=== Generating Rust code with purust ==="
+node ../purust/bin/purust.js --main Test.Main || exit 1
+
+echo "=== Compiling and running Rust test binary ==="
+if [ -d "output/purust_output" ]; then
+    cd output/purust_output
+    cargo run
+else
+    echo "No output/purust_output found."
+    exit 1
+fi
+echo -e "\n✅ Tests passed successfully!"

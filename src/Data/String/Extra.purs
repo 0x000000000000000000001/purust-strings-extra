@@ -135,7 +135,7 @@ regexUnicodeWords =
   where
   -- https://github.com/lodash/lodash/blob/master/.internal/unicodeWords.js
   -- Used to compose unicode character classes.
-  rsAstralRange = "\\ud800-\\udfff"
+  rsAstralRange = "\\x{10000}-\\x{10FFFF}"
   rsComboMarksRange = "\\u0300-\\u036f"
   reComboHalfMarksRange = "\\ufe20-\\ufe2f"
   rsComboSymbolsRange = "\\u20d0-\\u20ff"
@@ -160,11 +160,11 @@ regexUnicodeWords =
   rsDingbat = "[" <> rsDingbatRange <> "]"
   rsLower = "[" <> rsLowerRange <> "]"
   rsMisc = "[^" <> rsAstralRange <> rsBreakRange <> rsDigit <> rsDingbatRange <> rsLowerRange <> rsUpperRange <> "]"
-  rsFitz = "\\ud83c[\\udffb-\\udfff]"
+  rsFitz = "[\\x{1F3FB}-\\x{1F3FF}]"
   rsModifier = "(?:" <> rsCombo <> "|" <> rsFitz <> ")"
   rsNonAstral = "[^" <> rsAstralRange <> "]"
-  rsRegional = "(?:\\ud83c[\\udde6-\\uddff]){2}"
-  rsSurrPair = "[\\ud800-\\udbff][\\udc00-\\udfff]"
+  rsRegional = "(?:[\\x{1F1E6}-\\x{1F1FF}]){2}"
+  rsSurrPair = "[\\x{10000}-\\x{10FFFF}]"
   rsUpper = "[" <> rsUpperRange <> "]"
   rsZWJ = "\\u200d"
 

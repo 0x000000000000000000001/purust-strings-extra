@@ -1,6 +1,6 @@
 pub fn Data_String_Extra_levenshtein(mut a_val: crate::UnknownType, mut b_val: crate::UnknownType) -> crate::UnknownType {
-    let a = a_val.init_string.as_ref().unwrap();
-    let b = b_val.init_string.as_ref().unwrap();
+    let a = a_val.unwrap_string();
+    let b = b_val.unwrap_string();
     
     let a_chars: Vec<char> = a.chars().collect();
     let b_chars: Vec<char> = b.chars().collect();
@@ -25,22 +25,22 @@ pub fn Data_String_Extra_levenshtein(mut a_val: crate::UnknownType, mut b_val: c
     }
     
     let dist = d[a_chars.len()][b_chars.len()] as i64;
-    crate::UnknownType::new(crate::Record_a { init_int: Some(dist), ..Default::default() })
+    crate::Value::Int(dist)
 }
 
 pub fn Data_String_Extra_sorensenDiceCoefficient(mut a_val: crate::UnknownType, mut b_val: crate::UnknownType) -> crate::UnknownType {
-    let a = a_val.init_string.as_ref().unwrap();
-    let b = b_val.init_string.as_ref().unwrap();
+    let a = a_val.unwrap_string();
+    let b = b_val.unwrap_string();
     
     if a == b {
-        return crate::UnknownType::new(crate::Record_a { init_number: Some(1.0), ..Default::default() });
+        return crate::Value::Number(1.0);
     }
     
     let a_chars: Vec<char> = a.chars().collect();
     let b_chars: Vec<char> = b.chars().collect();
     
     if a_chars.len() < 2 || b_chars.len() < 2 {
-        return crate::UnknownType::new(crate::Record_a { init_number: Some(0.0), ..Default::default() });
+        return crate::Value::Number(0.0);
     }
     
     let mut a_bigrams = std::collections::HashMap::new();
@@ -62,5 +62,5 @@ pub fn Data_String_Extra_sorensenDiceCoefficient(mut a_val: crate::UnknownType, 
     
     let coeff = (2.0 * intersection as f64) / ((a_chars.len() - 1 + b_chars.len() - 1) as f64);
     
-    crate::UnknownType::new(crate::Record_a { init_number: Some(coeff), ..Default::default() })
+    crate::Value::Number(coeff)
 }

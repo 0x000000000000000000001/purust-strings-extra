@@ -23,6 +23,20 @@ workspace:
   packageSet:
     registry: 77.7.0
   extraPackages:
+    partial:
+      path: "../purust-partial"
+    unsafe-coerce:
+      path: "../purust-unsafe-coerce"
+    functions:
+      path: "../purust-functions"
+    refs:
+      path: "../purust-refs"
+    unfoldable:
+      path: "../purust-unfoldable"
+    enums:
+      path: "../purust-enums"
+    exists:
+      path: "../purust-exists"
     aff:
       path: "../purust-aff"
     arrays:
